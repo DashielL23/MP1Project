@@ -1,11 +1,10 @@
 import java.awt.*;
-import javax.swing.*;
-
-public class MP1project extends JFrame
+import java.awt.event.ActionEvent;
+public class MP1project
 {     
   public static void main(String args[])
   {
-    new windowlayout();
-    windowlayout.mainWindow();
+    windowlayout window = new windowlayout();
+    window.mainWindow();
   }
 }

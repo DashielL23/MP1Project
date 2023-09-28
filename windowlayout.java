@@ -1,13 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class windowlayout {
-    public static void mainWindow()
-     {
+
+  JButton button = new JButton("Submit");
+  TextField player = new TextField(); 
+  JTextArea textArea = new JTextArea();
+  JScrollPane scrollPane = new JScrollPane(textArea);
+  int x; 
+
+  public void mainWindow(){
        Font playerFont = new Font("Arial", Font.BOLD, 70);
        Font buttonFont = new Font("Arial", Font.BOLD, 40);
-
-       
+       Font textAreaFont = new Font("Arial", Font.BOLD, 35);
 
        JFrame frame = new JFrame("Tech Quest"); // creates window named Tech Quest in this instance
        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Closes window when you click X
@@ -15,23 +22,38 @@ public class windowlayout {
        frame.getContentPane().setBackground(Color.BLACK); //Sets color to Black in the window
        frame.setVisible(true); //sets window to being visible
        frame.setLocationRelativeTo(null); // makes it so we can specify areas of text thingys
-       frame.setLayout(null); // makes it so we can also specify areas of text thingys
+       frame.setLayout(new BorderLayout()); // makes it so we can also specify areas of text thingys
+      
+       JPanel bottomPanel = new JPanel();
+       bottomPanel.setLayout(new BorderLayout());
+       
+       player.setPreferredSize(new Dimension(764, 100)); // Defines area for Text Fields
+       player.setFont(playerFont); // Sets Text parameters to defined Font playerFont
+       // Sets where Button is
+       button.setFont(buttonFont); // Defines stuff for font
        
 
-       TextField player = new TextField(); // Creates text area for player to typ
-       player.setBounds(200, 850, 764, 100); // Defines area for Text Fields
-       player.setFont(playerFont); // Sets Text parameters to defined Font playerFont
+       button.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == button) {
+                String submission = player.getText();
+                textArea.append("> " + submission + "\n"); // Append new text
+                player.setText(""); // Clear the input field
+                x+=1;
+            }
+        }
+      });
 
-       JButton button = new JButton("Submit"); // Creates Button
-       button.setBounds(0, 850, 200, 100); // Sets where Button is
-       button.setFont(buttonFont); // Defines stuff for font
+       scrollPane.setPreferredSize(new Dimension(200, 700));
+       textArea.setBackground(Color.BLACK);
+       textArea.setForeground(Color.WHITE);
+       textArea.setFont(textAreaFont);
 
-       JScrollBar scrollBar = new JScrollBar();
-       scrollBar.setBounds(965, 0, 35, 1000);
+       bottomPanel.add(player, BorderLayout.CENTER);
+       bottomPanel.add(button, BorderLayout.EAST);
 
-       frame.add(player); // Adds player field to frame 
-       frame.add(button); // Adds button to frame
-       frame.add(scrollBar);
+       frame.add(bottomPanel, BorderLayout.SOUTH); // Adds player field to frame 
+       frame.add(scrollPane, BorderLayout.CENTER); // Adds button to frame 
      }
-     
-}
+    
+    }
