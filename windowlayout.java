@@ -9,6 +9,7 @@ public class windowlayout {
   TextField player = new TextField(); 
   JTextArea textArea = new JTextArea();
   JScrollPane scrollPane = new JScrollPane(textArea);
+  String playerStringForObjects = "";
   int x; 
 
   public void mainWindow(){
@@ -39,6 +40,7 @@ public class windowlayout {
                 String submission = player.getText();
                 textArea.append("> " + submission + "\n"); // Append new text
                 player.setText(""); // Clear the input field
+                playerStringForObjects = submission;
                 x+=1;
             }
         }
@@ -46,8 +48,9 @@ public class windowlayout {
 
        scrollPane.setPreferredSize(new Dimension(200, 700));
        textArea.setBackground(Color.BLACK);
-       textArea.setForeground(Color.WHITE);
+       textArea.setForeground(Color.GREEN);
        textArea.setFont(textAreaFont);
+       textArea.setEditable(false);
 
        bottomPanel.add(player, BorderLayout.CENTER);
        bottomPanel.add(button, BorderLayout.EAST);
