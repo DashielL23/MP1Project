@@ -1,4 +1,3 @@
-import java.util.Timer;
 public class Floor1 {
     //instantiaze vars
     private String[][] floorMap = new String[3][3]; //creates an Array Map 3x3 (0-2)
@@ -6,7 +5,6 @@ public class Floor1 {
     private int x = 1; // start position for player x
     private int y = 1; // start position for player y
 
-    private Timer timerForFinish = new Timer();
 
     private boolean floor1 = true; // for while loop
     private boolean hasChickenTenders = false;
@@ -15,7 +13,6 @@ public class Floor1 {
     private boolean sentCommand = false;
 
     private String storedPreviousCommand = "";
-    private String stringForCommands = ""; //also for while loop to assure playerstringforobjects is initialized
     private final String beginOutput = "\n" + "----------" + "\n";
     private final String endOutput = "\n" + "----------" + "\n" + "\n";
     //main void that runs in the main file
@@ -24,16 +21,17 @@ public class Floor1 {
         //initialize arrays / vars
         floorMapSpotsUnenterable();
         printLocationInformation();
-        storedPreviousCommand = stringForCommands;
+        storedPreviousCommand = a.playerStringForObjects;
         //send first message
         a.textArea.append(floorMap[x][y]);
         //main loop
         while(floor1){
             System.out.println(a.playerStringForObjects);
-            commandCheck();
+
+            commandCheck(a);
             if(sentCommand == true){
                 //set command sent to the previous command you just
-                storedPreviousCommand = stringForCommands;
+                storedPreviousCommand = a.playerStringForObjects;
                 //moving commands
                 moveNorth(a);
                 moveSouth(a);
@@ -119,18 +117,15 @@ public class Floor1 {
     }
 
     public void useKeyCard(windowlayout a){
-        CustomTimerTask timer = new CustomTimerTask(a);
         if((floorMap[x][y] == floorMap[2][1] && hasKeyCard == true) && a.playerStringForObjects.equalsIgnoreCase("use elevator keycard")){
-            a.textArea.append(beginOutput + "You use the ELEVATOR KEYCARD, and successfully enter the elevator. You" + "\n" + "  proceed up towards the second floor..." + endOutput);
             a.playerStringForObjects = "";
             floor1 = false;
-            timerForFinish.schedule(timer, 5000);
             }
     }
 
     //movement voids
     public void moveEast(windowlayout a){
-        if(stringForCommands.equalsIgnoreCase("go east")){
+        if(a.playerStringForObjects.equalsIgnoreCase("go east")){
         x++;
         invalidAreaInArrayx(a);
         a.textArea.append(floorMap[x][y]);
@@ -139,7 +134,7 @@ public class Floor1 {
     }
 
     public void moveWest(windowlayout a){
-        if(stringForCommands.equalsIgnoreCase("go west")){
+        if(a.playerStringForObjects.equalsIgnoreCase("go west")){
         x--;
         invalidAreaInArrayx(a);
         a.textArea.append(floorMap[x][y]);
@@ -148,7 +143,7 @@ public class Floor1 {
     }
     
     public void moveNorth(windowlayout a){
-        if(stringForCommands.equalsIgnoreCase("go north")){
+        if(a.playerStringForObjects.equalsIgnoreCase("go north")){
         y++;
         invalidAreaInArrayY(a);
         a.textArea.append(floorMap[x][y]);
@@ -157,7 +152,7 @@ public class Floor1 {
     }
 
     public void moveSouth(windowlayout a){
-        if(stringForCommands.equalsIgnoreCase("go south")) {
+        if(a.playerStringForObjects.equalsIgnoreCase("go south")) {
             y--;
             invalidAreaInArrayY(a);
             a.textArea.append(floorMap[x][y]);
@@ -193,11 +188,11 @@ public class Floor1 {
     }
 
     //Misc voids
-    public void commandCheck(){
-        if(storedPreviousCommand == stringForCommands){
+    public void commandCheck(windowlayout a){
+        if(storedPreviousCommand == a.playerStringForObjects){
             sentCommand = false;
         }
-        if(!(storedPreviousCommand == stringForCommands)){
+        if(!(storedPreviousCommand == a.playerStringForObjects)){
             sentCommand = true;
         }
     }
