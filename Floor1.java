@@ -20,7 +20,7 @@ public class Floor1 {
     {
         //initialize arrays / vars
         floorMapSpotsUnenterable();
-        printLocationInformation();
+        floorMapSpotsEnterable();
         storedPreviousCommand = a.playerStringForObjects;
         //send first message
         a.textArea.append(floorMap[x][y]);
@@ -55,7 +55,7 @@ public class Floor1 {
         floorMap[0][0] = floorMap[0][2] = floorMap[1][2] = floorMap[2][0] = floorMap[2][2] = "  Cannot Enter"; // Can't enter
     }
 
-    public void printLocationInformation()
+    public void floorMapSpotsEnterable()
     {
         floorMap[0][1] = beginOutput + "  As you enter the Main Office, the stench coming from" + "\n" + "  the room becomes harder to bear, and you have difficulty" + "\n" + "  breathing. After investigating the smell, you find that it was" + "\n" + "  an expired serving of CHICKEN TENDERS, fully complete with chunky" + "\n" + "  chwocolate milk." + "\n" + "\n" + "  To your east is the hallways you've came from, though" + "\n" + "  it may be in your best interest to rid the " + "\n" + "  main office of the rancid smell." + endOutput;
         floorMap[1][1] = beginOutput + "  As you enter the hallways of the first floor, you" + "\n" + "  hear the groans of lost souls who ended up in" + "\n" + "  BTHS orientation day coming from the Auditorium. The stairs are" + "\n" + "  blocked, the only way from here will be the elevator." + "\n" + "\n" + "  To your east is the Elevator, which requires a key." + "\n" + "\n" + "  To your west is the Main Office, with a rancid" + "\n" + "  smell seeping out from the inside. " + "\n" + "\n" + "  To your south is the Auditorium where Orientation is occuring" + "\n" + "\n" + "  To your north is the door you entered from, although" + "\n" + "  it seems to have locked as you entered. Doesn't look" + "\n" + "  like you won't be leaving through here..." + "\n" + "\n" + "  What will you do?" + endOutput;
