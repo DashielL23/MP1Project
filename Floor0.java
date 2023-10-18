@@ -41,7 +41,7 @@ public class Floor0 {
     public void printLocationInformation()
     {
         floorMap[0] = beginOutput + "  It isn't much, but it is definitely a New York" + "\n" + "  City apartment. You can hear the hustle and bustle of" + "\n" + "  the city outside your window. The last thing you need" + "\n" + "  to do is get your KEYS before you leave." + "\n" + "\n" + "  To your east is the subway. What do you do?" + endOutput;
-        floorMap[1] = beginOutput + "  You need your keys before you can go to the subway." + endOutput;
+        floorMap[1] = "  Cannot Enter";
     }
 
     //getting / using item voids

@@ -9,10 +9,10 @@ public class MP1project{
     windowlayout window = new windowlayout();
     window.mainWindow();
 
-    introduction.introductionLevel(window);
-    intermission.intermissionFloor0(window);
-    firstFloor.firstFloorLevel(window);
-    intermission.intermissionFloor1(window);
+    // introduction.introductionLevel(window);
+    // intermission.intermissionFloor0(window);
+    // firstFloor.firstFloorLevel(window);
+    // intermission.intermissionFloor1(window);
     secondFloor.secondFloorLevel(window);
     
   }

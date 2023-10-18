@@ -22,7 +22,6 @@ public void mainWindow(){
   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Closes window when you click X
   frame.setSize(1000,1000); // Sets the size of the window
   frame.getContentPane().setBackground(Color.BLACK); //Sets color to Black in the window
-  frame.setVisible(true); //sets window to being visible
   frame.setLocationRelativeTo(null); // makes it so we can specify areas of text thingys
   frame.setLayout(new BorderLayout()); // makes it so we can also specify areas of text thingys
 
@@ -66,6 +65,7 @@ public void mainWindow(){
 
   frame.add(bottomPanel, BorderLayout.SOUTH); // Adds player field to frame 
   frame.add(scrollPane, BorderLayout.CENTER); // Adds button to frame 
+  frame.setVisible(true); //sets window to being visible
 }
 
 }

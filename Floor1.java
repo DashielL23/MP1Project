@@ -92,8 +92,9 @@ public class Floor1 {
             }
             if((a.playerStringForObjects.equalsIgnoreCase("use Chicken Tenders")) && hasChickenTenders){
                 luredAuditorium = true;
-                a.textArea.append(beginOutput + "  You place the CHICKEN TENDERS on the ground near the" + "\n" + "  Auditorium door. All of a sudden, you hear a 'BANG," + "\n" + "  BANG, BANG'. You quickly hide behind a pillar as tens" + "\n" + "  of orientation members rush out from the Auditorium and scramble" + "\n" + "  to eat the CHICKEN TENDERS placed outside. You can no" + "\n" + " longer use CHICKEN TENDERS. As you walk inside the Auditorium" + "\n" + "  and find a ELEVATOR KEYCARD that must have been dropped" + "\n" + "  during the commotion." + "\n" + "\n" + "  To your north are the hallways you've came from. What" + "  do you do?" + endOutput);
+                a.textArea.append(beginOutput + "  You place the CHICKEN TENDERS on the ground near the" + "\n" + "  Auditorium door. All of a sudden, you hear a 'BANG," + "\n" + "  BANG, BANG'. You quickly hide behind a pillar as tens" + "\n" + "  of orientation members rush out from the Auditorium and scramble" + "\n" + "  to eat the CHICKEN TENDERS placed outside. You can no" + "\n" + " longer use CHICKEN TENDERS. As you walk inside the Auditorium" + "\n" + "  and find a ELEVATOR KEYCARD that must have been dropped" + "\n" + "  during the commotion." + "\n" + "\n" + "  To your north are the hallways you've came from. What" + "\n" + "\n" + "  do you do?" + endOutput);
                 floorMap[1][1] = beginOutput + "  As you enter the hallways of the first floor, you" + "\n" + "  hear the groans of lost souls who ended up in" + "\n" + "  BTHS orientation day coming from the Auditorium. The stairs are" + "\n" + "  blocked, the only way from here will be the elevator." + "\n" + "\n" + "  To your east is the Elevator, which requires a key." + "\n" + "\n" + "  To your west is the Main Office" + "\n" + "\n" + "  To your south is the Auditorium where Orientation is paused" + "\n" + "\n" + "  To your north is the door you entered from, although" + "\n" + "  it seems to have locked as you entered. Doesn't look" + "\n" + "  like you won't be leaving through here..." + "\n" + "\n" + "  What will you do?" + endOutput;
+                floorMap[1][0] = beginOutput + "  You walk in the empty auditorium, hearing the orientation members still feasting outside on the chicken tenders." + "\n" + "  On the ground lies an ELEVATOR KEYCARD." + "\n" + "\n" + "  To your north are the halls you've came from"  + endOutput;
                 a.playerStringForObjects = "";
             }
             
@@ -108,9 +109,9 @@ public class Floor1 {
             }
             if(luredAuditorium == true && a.playerStringForObjects.equalsIgnoreCase("get elevator keycard")){
                 hasKeyCard = true;
-                a.textArea.append(beginOutput + "  You take the ELEVATOR KEYCARD. Now you can use the" + "  elevator." + endOutput);
-                    floorMap[1][0] = beginOutput + "  You enter the Auditorium, narrowly avoiding the crowd still eating" + "  the old Chicken Tenders. There doesn't seem to be anything" + "  you can do here." + "\n" + "\n" + "  To your north are the halls you came from. What" + "  do you do?" + endOutput;
-                floorMap[2][1] = beginOutput + "  As you approach the elevator, you realize you need a" + "  key to access it. Maybe you can use a RECENT " + "  ITEM?" + "\n" + "\n" + "  To your west is the hall you've came from." + "\n" + "  What will you do?" + endOutput;
+                a.textArea.append(beginOutput + "  You take the ELEVATOR KEYCARD. Now you can use the" + "\n" + "  elevator." + endOutput);
+                floorMap[1][0] = beginOutput + "  You enter the Auditorium, narrowly avoiding the crowd still eating" + "\n" + "  the old Chicken Tenders. There doesn't seem to be anything" + "\n" + "  you can do here." + "\n" + "\n" + "  To your north are the halls you came from. What" + "  do you do?" + endOutput;
+                floorMap[2][1] = beginOutput + "  As you approach the elevator, you realize you need a" + "\n" + "  key to access it. Maybe you can use a RECENT " + "\n" + "  ITEM?" + "\n" + "\n" + "  To your west is the hall you've came from." + "\n" + "  What will you do?" + endOutput;
                 a.playerStringForObjects = "";
             }
         }
@@ -166,7 +167,8 @@ public class Floor1 {
         if( x > 2 || x < 0)
         {
             a.textArea.append(beginOutput + "  Invalid movement!" + endOutput);
-            x--;
+            if(x < 0) x++;
+            else x--;
         }
         if(floorMap[x][y] == "  Cannot Enter"){
             a.textArea.append(beginOutput + "  Can't go here!" + endOutput);
@@ -179,11 +181,11 @@ public class Floor1 {
         if(y > 2 || y < 0)
         {
             a.textArea.append(beginOutput + "  Invalid movement!" + endOutput);
-            y--;
+            if(y < 0) y++;
+            else y--;
         }
         if(floorMap[x][y] == "  Cannot Enter"){
             a.textArea.append(beginOutput + "  Can't go here!" + endOutput);
-            y--;
         }
     }
 
