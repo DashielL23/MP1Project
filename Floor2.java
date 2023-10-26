@@ -4,7 +4,7 @@ private String[][] floorMap = new String[4][4]; //creates an Array Map 4x4 (0-3)
 
 private int x = 1; // start position for player x
 private int y = 2; // start position for player y
-private int codeA,codeB,codeC,codeD;
+private Integer codeA,codeB,codeC,codeD;
 
 
 private boolean sentCommand = false;
@@ -12,9 +12,10 @@ private boolean floor2 = true;
 private boolean usingKeypad = false;
 private boolean hasMonitor = false;
 private boolean hasPoster = false;
+private boolean hasNotes = false;
+private boolean hasClipboard = false;
 private boolean movingNorth = false; // detects whether player moves up or down
 private boolean movingEast = false; // detects whether player moves east or west
-
 private String storedPreviousCommand = "";
 private final String beginOutput = "\n" + "----------" + "\n";
 private final String endOutput = "\n" + "----------" + "\n" + "\n";
@@ -58,8 +59,9 @@ public void secondFloorLevel(windowlayout a)
                 commandCheck(a);
                 if(sentCommand == true){
                     if(a.playerStringForObjects.equalsIgnoreCase(fullCode)){
-                    floor2 = false;
                     a.playerStringForObjects = "";
+                    floor2 = false;
+                    return;
                     }
                     else if (!(a.playerStringForObjects.equalsIgnoreCase(fullCode))){
                         a.textArea.append(beginOutput + "  Incorrect code!" + endOutput);
@@ -69,8 +71,10 @@ public void secondFloorLevel(windowlayout a)
                 }
             }
             //Getting clues to the Keypad Code
+            getMonitor(a);
             getPoster(a);
-
+            getNote(a);
+            getClipBoard(a);
             if(!(a.playerStringForObjects.equalsIgnoreCase(""))){
                 a.textArea.append(beginOutput + "  Unknown Command!" + endOutput);
             }
@@ -99,30 +103,46 @@ public void getPoster(windowlayout a){
     }
 }
 
-public void useMonitor(windowlayout a){
-    if(a.playerStringForObjects.equalsIgnoreCase("get Monitor") && floorMap[x][y] == floorMap[3][0]){
-        a.textArea.append(beginOutput + "  As you approach the Monitor, it displays: " + "\n" + "\n" + "  This is the \"second\" warning: Please return to your seat before your test is deemed invalid. " + codeA + endOutput);
+public void getMonitor(windowlayout a){
+    if(a.playerStringForObjects.equalsIgnoreCase("get Monitor") && floorMap[x][y] == floorMap[2][0]){
+        a.textArea.append(beginOutput + "  As you approach the Monitor, it displays: " + "\n" + "\n" + "  This is the \"second\" warning: Please return to your seat in ge" + "\"" + codeB + "\"" + " minutes before your test is deemed invalid. " + endOutput);
         a.playerStringForObjects = "";
         hasMonitor = true;
     }
     else if (a.playerStringForObjects.equalsIgnoreCase("use Monitor") && hasMonitor){
-        a.textArea.append(beginOutput + "  As you approach the Monitor, it displays: " + "\n" + "\n" + "  This is the \"second\" warning: Please return to your seat in " + "\"" + codeB + "\"" + " minutes before your test is deemed invalid. " + codeA + endOutput);
+        a.textArea.append(beginOutput + "  As you read the Monitor, it displays: " + "\n" + "\n" + "  This is the \"second\" warning: Please return to your seat in " + "\"" + codeB + "\"" + " minutes before your test is deemed invalid. " + endOutput);
         a.playerStringForObjects = "";
     }
 }
 
-public void useSink(windowlayout a){
-    if(a.playerStringForObjects.equalsIgnoreCase("use Sink") && floorMap[x][y] == floorMap[3][0]){
-        a.textArea.append(beginOutput + "  you turn off the SINK, and you see a W" + "\n" + "\n" + "  This is the \"second\" warning: Please return to your seat before your test is deemed invalid. " + codeA + endOutput);
+public void getNote(windowlayout a){
+    if(a.playerStringForObjects.equalsIgnoreCase("get Note") && floorMap[x][y] == floorMap[3][1]){
+        a.textArea.append(beginOutput + "  you take the note off of the stall walls. It reads:" + "\n" + "\n" + "  This is the \"third\" time I have to say this: Please flush the god damn toilets! This is the " + codeC + "th time I've had to deal with this!" + endOutput);
         a.playerStringForObjects = "";
-        hasMonitor = true;
+        hasNotes = true;
     }
+    else if(a.playerStringForObjects.equalsIgnoreCase("use note") && hasNotes){
+        a.textArea.append(beginOutput + "You read the note:" + "\n" + "\n" + "  This is the \\\"third\\\" time I have to say this: Please flush the god damn toilets! This is the " + codeC + "th time I've had to deal with this!" + endOutput);
+        a.playerStringForObjects = "";
+    }
+}
 
+public void getClipBoard(windowlayout a){
+    if(a.playerStringForObjects.equalsIgnoreCase("get clipboard") && floorMap[x][y] == floorMap[3][2]){
+        a.textArea.append(beginOutput + "  You grab the clipboard off the desk. It seems to be grades of several students: " + "\n" + "\n" + "  \"Fourth\" Student: " + codeD + "/10");
+        a.playerStringForObjects = "";
+        hasClipboard = true;
+    }
+    else if(a.playerStringForObjects.equalsIgnoreCase("use clipboard") && hasClipboard){
+        a.textArea.append("  You read the clipboard:" + "\n" + "\n" + "  \"Fourth\" Student: " + codeD + "/10" );
+        a.playerStringForObjects = "";
+    }
+    
 }
 
 //initialize area information and stuff
 public void floorMapSpotsUnenterable(){
-    floorMap[0][0] = floorMap[1][0] = floorMap[3][0]  = floorMap[0][2] = floorMap[2][3] = "  Cannot Enter"; // Can't enter
+    floorMap[0][0] = floorMap[1][0] = floorMap[3][0]  = floorMap[0][2] = floorMap[2][3] = floorMap[3][3] = "  Cannot Enter"; // Can't enter
 }
 
 public void floorMapSpotsEnterable(){
@@ -133,9 +153,9 @@ public void floorMapSpotsEnterable(){
     floorMap[0][1] = beginOutput + "  As you walk toward the stairwell, you see a KEYPAD" + "\n" + "  taped onto the door that reads:" + "\n" + "  \" Input Password \"" + "\n" + "\n" + "  To your east are the South West halls" + "\n" + "\n" + "  What will you do?" + endOutput;
     floorMap[1][3] = beginOutput + "  As you enter 2N2, you notice that no one seems" + "\n" + "  to realize you've entered. You can hear scribbles coming from" + "\n" + "  students doing practice exams. On the whiteboard, there are countless" + "\n" + "  engravings that say:" + "\n" + "  \"Gotta get a 5, before Newman takes our lives!\"." + "\n" + "\n" + "  To your west is a closet labled - 2N2 B" + "\n" + "\n" + "  To your south are the North West halls." + "  What will you do?" + endOutput;
     floorMap[0][3] = beginOutput + "  As you enter " + 2 + "N2" + " B, a musty smell infiltrates your" + "\n" + "  nose, and you can see dusty boxes of various school" + "\n" + "  supplies. in the corner, you can see a POSTER about" + "\n" + "  fire drill safety, though it seems to be slightly discolored? " + "\n" + "\n" + "  To your east is 2N2, the AP Prep room" + "\n" + "\n" + "  What will you do?" + endOutput;
-    floorMap[3][2] = beginOutput + "  As you enter 2E17, you hear several students giving a" + "\n" + "  presentation about some controversial current event and how their proposed" + "\n" + "  solutions could solve it. They don't seem to notice you" + "\n" + "  entering. On the teacher's desk there is a NOTE that" + "\n" + "  stands out to you." + "\n" + "\n" + "  To your north is a closet labled: 2E17 B" + "  To your west are the North East halls." + "\n" + "\n" + "  What will you do?" + endOutput;
-    floorMap[3][1] = beginOutput + "  As you enter the bathroom, a strange smoky, yet fruity" + "\n" + "  smell fills your nose. You notice that someone has left" + "\n" + "  the SINK on." + "\n" + "\n" + "  To your west are the South East halls." + "\n" + "\n" + "  What will you do?" + endOutput;
-    floorMap[3][0] = beginOutput + "  As you walk into the SAT prep room, you're met" + "\n" + "  with a poster depicting a hooded man and a senior" + "\n" + "  citizen with \"NON PROFIT\" written on their shirt, flailing money" + "\n" + "  around. A caption reads: \"BFFS!\". In the clasroom, several students" + "\n" + "  are mindlessly answering questions on their computer. it appears one" + "\n" + "  MONITOR is displaying a strange message." + "\n" + "\n" + "  To your north are the South East halls." + "  What will you do?" + endOutput;
+    floorMap[3][2] = beginOutput + "  As you enter 2E17, you hear several students giving a" + "\n" + "  presentation about some controversial current event and how their proposed" + "\n" + "  solutions could solve it. They don't seem to notice you" + "\n" + "  entering. On the teacher's desk there is a CLIPBOARD that" + "\n" + "  stands out to you." + "\n" + "\n" + "  To your west are the North East halls." + "\n" + "\n" + "  What will you do?" + endOutput;
+    floorMap[3][1] = beginOutput + "  As you enter the bathroom, a strange smoky, yet fruity" + "\n" + "  smell fills your nose. You notice that someone has left" + "\n" + "  a NOTE in one of the stalls." + "\n" + "\n" + "  To your west are the South East halls." + "\n" + "\n" + "  What will you do?" + endOutput;
+    floorMap[2][0] = beginOutput + "  As you walk into the SAT prep room, you're met" + "\n" + "  with a poster depicting a hooded man and a senior" + "\n" + "  citizen with \"NON PROFIT\" written on their shirt, flailing money" + "\n" + "  around. A caption reads: \"BFFS!\". In the clasroom, several students" + "\n" + "  are mindlessly answering questions on their computer. it appears one" + "\n" + "  MONITOR is displaying a strange message." + "\n" + "\n" + "  To your north are the South East halls." + "  What will you do?" + endOutput;
 }
 
 //movement voids
