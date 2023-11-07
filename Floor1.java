@@ -15,10 +15,12 @@ public class Floor1 {
     private String storedPreviousCommand = "";
     private final String beginOutput = "\n" + "----------" + "\n";
     private final String endOutput = "\n" + "----------" + "\n" + "\n";
+
     //main void that runs in the main file
     public void firstFloorLevel(windowlayout a)
     {
         //initialize arrays / vars
+        Movement movementFloor1 = new Movement();
         floorMapSpotsUnenterable();
         floorMapSpotsEnterable();
         storedPreviousCommand = a.playerStringForObjects;
@@ -26,17 +28,15 @@ public class Floor1 {
         a.textArea.append(floorMap[x][y]);
         //main loop
         while(floor1){
-            System.out.println(a.playerStringForObjects);
-
+            System.out.println(x + "" + y);
             commandCheck(a);
             if(sentCommand == true){
                 //set command sent to the previous command you just
                 storedPreviousCommand = a.playerStringForObjects;
                 //moving commands
-                moveNorth(a);
-                moveSouth(a);
-                moveEast(a);
-                moveWest(a); 
+                int[] newCoords = movementFloor1.movements(a, x, y, floorMap, 2);
+                x = newCoords[0];
+                y = newCoords[1];
                 //Getting Items or Using them
                 oldTenders(a); 
                 useTenders(a);
@@ -72,14 +72,13 @@ public class Floor1 {
                 a.playerStringForObjects = "";
                 
             }
-            if(a.playerStringForObjects.equalsIgnoreCase("get CHICKEN TENDERS")){
+            else if(a.playerStringForObjects.equalsIgnoreCase("get CHICKEN TENDERS")){
                 hasChickenTenders = true;
                 a.textArea.append(beginOutput + "  Obtained CHICKEN TENDERS" + endOutput);
                 floorMap[0][1] = beginOutput + "  As you enter the Main Office, you realize the stench " + "\n" + "  coming from the room has disappeared. " + "\n" + "\n" + "  To your east is the hallways you've came from." + endOutput;
                 floorMap[1][1] = beginOutput + "  As you enter the hallways of the first floor, you" + "\n" + "  hear the groans of lost souls who ended up in" + "\n" + "  BTHS orientation day coming from the Auditorium. The stairs are" + "\n" + "  blocked, the only way from here will be the elevator." + "\n" + "\n" + "  To your east is the Elevator, which requires a key." + "\n" + "\n" + "  To your west is the Main Office" + "\n" + "\n" + "  To your south is the Auditorium where Orientation is occuring" + "\n" + "\n" + "  To your north is the door you entered from, although" + "\n" + "  it seems to have locked as you entered. Doesn't look" + "\n" + "  like you won't be leaving through here..." + "\n" + "\n" + "  What will you do?" + endOutput;
                 floorMap[1][0] = beginOutput + "  Before you entered the Auditorium, you think better of it," + "\n" + "  realizing you'd quickly be caught be Dark Lord Newman's servants" + "\n" + "  if you walked in carelessly. You'll need to lure away" + "\n" + "  the orientation members with something. Maybe use a RECENT ITEM?" + endOutput;
                 a.playerStringForObjects = "";
-                
             }
         }
     }
@@ -122,71 +121,6 @@ public class Floor1 {
             a.playerStringForObjects = "";
             floor1 = false;
             }
-    }
-
-    //movement voids
-    public void moveEast(windowlayout a){
-        if(a.playerStringForObjects.equalsIgnoreCase("go east")){
-        x++;
-        invalidAreaInArrayx(a);
-        a.textArea.append(floorMap[x][y]);
-        a.playerStringForObjects = "";
-        }
-    }
-
-    public void moveWest(windowlayout a){
-        if(a.playerStringForObjects.equalsIgnoreCase("go west")){
-        x--;
-        invalidAreaInArrayx(a);
-        a.textArea.append(floorMap[x][y]);
-        a.playerStringForObjects = "";
-        }
-    }
-    
-    public void moveNorth(windowlayout a){
-        if(a.playerStringForObjects.equalsIgnoreCase("go north")){
-        y++;
-        invalidAreaInArrayY(a);
-        a.textArea.append(floorMap[x][y]);
-        a.playerStringForObjects = "";
-        }
-    }
-
-    public void moveSouth(windowlayout a){
-        if(a.playerStringForObjects.equalsIgnoreCase("go south")) {
-            y--;
-            invalidAreaInArrayY(a);
-            a.textArea.append(floorMap[x][y]);
-            a.playerStringForObjects = "";
-        }
-    }
-
-    //voids for testing if array is out of bounds    
-    public void invalidAreaInArrayx(windowlayout a)
-    {
-        if( x > 2 || x < 0)
-        {
-            a.textArea.append(beginOutput + "  Invalid movement!" + endOutput);
-            if(x < 0) x++;
-            else x--;
-        }
-        if(floorMap[x][y] == "  Cannot Enter"){
-            a.textArea.append(beginOutput + "  Can't go here!" + endOutput);
-            x--;
-        }
-    }
-
-    public void invalidAreaInArrayY(windowlayout a)
-    {
-        if(y > 2 || y < 0)
-        {
-            a.textArea.append(beginOutput + "  Invalid movement!" + endOutput);
-            if(y < 0) y++;
-            else y--;
-        }
-        if(floorMap[x][y] == "  Cannot Enter"){
-            a.textArea.append(beginOutput + "  Can't go here!" + endOutput);
-        }
     }
 
     //Misc voids

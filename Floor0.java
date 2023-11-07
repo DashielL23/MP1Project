@@ -11,13 +11,12 @@ public class Floor0 {
     private String storedPreviousCommand = "";
     private final String beginOutput = "\n" + "----------" + "\n";
     private final String endOutput = "\n" + "----------" + "\n" + "\n";
-
+    private Movement movement = new Movement();
     //main void
     public void introductionLevel(windowlayout a){
         printLocationInformation();
         a.textArea.append(beginOutput + "  The date is October 31st, 1982. While you aren't the" + "\n" + "  superstitious type, today is different." + "\n" + "\n" + "  For 60 years, rumors of students at Brooklyn Tech being" + "\n" + "  sacrificed to please ancient dieties have been spread. While you" + "\n" + "  first thought this was all an urban legend, tonight changed" + "\n" + "  your opinion. As you checked your grade with your guidance" + "\n" + "  counselor, it would seem that your GPA had shifted from" + "\n" + "  an A+ to a meager A-. You thought it was" + "\n" + "  impossible! You'd aced all your exams, crushed projects, and studied" + "\n" + "  hard." + "\n" + "\n" + "  This must have been the work of the rumoured Dark" + "\n" + "  Lord Newman, an evil being that has been lurking since" + "\n" + "  Brooklyn Tech opened. As the rumor says, first your grade" + "\n" + "  goes down mysteriously, then you wind up dead before the" + "\n" + "  year's end." + "\n" + "\n" + "  The only way to stop the curse is to find" + "\n" + "  Dark Lord Newman's Lair, rumored to be on the mystical" + "\n" + "  9th floor, and use his eldritch computer to turn your" + "\n" + "  GPA back to an A+ before November, otherwise it's too" + "\n" + "  late." + "\n" + "\n" + "  While fighting against the forces of a Dark lord may" + "\n" + "  be scary, nothing is scarier than the disaproving look of" + "\n" + "  your parents during report card day..." + "\n" + "\n" + "  Thus, you prepare for the infiltration of Brooklyn Tech." + endOutput);
         a.textArea.append(floorMap[x]);
-
         while(floor0){
             System.out.println(a.playerStringForObjects);
             commandCheck(a);
@@ -25,7 +24,11 @@ public class Floor0 {
                 //set command to what you previously set it to
                 storedPreviousCommand = a.playerStringForObjects;
                 //movement check
-                moveEast(a);
+                if(!movement.movementsFloor0(a, x, floorMap, usedKeys, floor0)){
+                    Intermission sleep = new Intermission(a);
+                    sleep.sleep(3);
+                    floor0 = false;
+                } 
                 //item check
                 getKeys(a);
                 useKeys(a);
@@ -41,7 +44,7 @@ public class Floor0 {
     public void printLocationInformation()
     {
         floorMap[0] = beginOutput + "  It isn't much, but it is definitely a New York" + "\n" + "  City apartment. You can hear the hustle and bustle of" + "\n" + "  the city outside your window. The last thing you need" + "\n" + "  to do is get your KEYS before you leave." + "\n" + "\n" + "  To your east is the subway. What do you do?" + endOutput;
-        floorMap[1] = "  Cannot Enter";
+        floorMap[1] = beginOutput + "  Cannot Enter" + endOutput;
     }
 
     //getting / using item voids
@@ -59,7 +62,6 @@ public class Floor0 {
     }
 
     public void useKeys(windowlayout a){
-        
         if((floorMap[x] == floorMap[0] && a.playerStringForObjects.equalsIgnoreCase("use keys") && usedKeys == true)){
             a.textArea.append(beginOutput + "  You have already used your keys." + endOutput);
             a.playerStringForObjects = "";
@@ -69,37 +71,6 @@ public class Floor0 {
             floorMap[1] = beginOutput + "  You enter the Subway station and you wait for a" + "\n" + "  subway." + endOutput;
             usedKeys = true;
             a.playerStringForObjects = "";
-        }
-    }
-    //movement voids
-    public void moveEast(windowlayout a){
-        if(a.playerStringForObjects.equalsIgnoreCase("go east")){
-            if(usedKeys == true){
-                invalidAreaInArrayx(a);
-                x++;
-                a.textArea.append(floorMap[1]);
-                a.playerStringForObjects = "";
-                floor0 = false;
-            }
-        }
-        else{
-            if(usedKeys == false && a.playerStringForObjects.equalsIgnoreCase("go east")){
-                a.textArea.append(floorMap[1]);
-                a.playerStringForObjects = "";
-            }
-        }
-    }
-
-    public void invalidAreaInArrayx(windowlayout a)
-    {
-        if( x > 1 || x < 0)
-        {
-            a.textArea.append(beginOutput + "  Invalid movement!" + endOutput);
-            x--;
-        }
-        if(floorMap[x] == "  Cannot Enter"){
-            a.textArea.append(beginOutput + "  Can't go here!" + endOutput);
-            x--;
         }
     }
 

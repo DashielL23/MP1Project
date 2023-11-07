@@ -4,7 +4,7 @@ private String[][] floorMap = new String[4][4]; //creates an Array Map 4x4 (0-3)
 
 private int x = 1; // start position for player x
 private int y = 2; // start position for player y
-private Integer codeA,codeB,codeC,codeD;
+private int codeA,codeB,codeC,codeD;
 
 
 private boolean sentCommand = false;
@@ -14,8 +14,6 @@ private boolean hasMonitor = false;
 private boolean hasPoster = false;
 private boolean hasNotes = false;
 private boolean hasClipboard = false;
-private boolean movingNorth = false; // detects whether player moves up or down
-private boolean movingEast = false; // detects whether player moves east or west
 private String storedPreviousCommand = "";
 private final String beginOutput = "\n" + "----------" + "\n";
 private final String endOutput = "\n" + "----------" + "\n" + "\n";
@@ -42,6 +40,7 @@ public void secondFloorLevel(windowlayout a)
     //creates code
     calculateCode(fullCode);
     //main loop
+    Movement movementFloor2 = new Movement();
     while(floor2){
         System.out.println(a.playerStringForObjects);
         commandCheck(a);
@@ -49,10 +48,9 @@ public void secondFloorLevel(windowlayout a)
             //set command sent to the previous command you just
             storedPreviousCommand = a.playerStringForObjects;
             //moving commands
-            moveNorth(a);
-            moveSouth(a);
-            moveEast(a);
-            moveWest(a); 
+            int[] newCoords = movementFloor2.movements(a, x, y, floorMap, 3);
+            x = newCoords[0];
+            y = newCoords[1];
             //Using Keypad
             useKeypad(a);
             while(usingKeypad){
@@ -93,8 +91,9 @@ public void useKeypad(windowlayout a){
 
 public void getPoster(windowlayout a){
     if(a.playerStringForObjects.equalsIgnoreCase("get Poster") && floorMap[x][y] == floorMap[0][3]){
-        a.textArea.append(beginOutput + "  The POSTER seems to be instructions in event of an outdoor evacuation it reads: " + "\n" + "\n" + "  \"first\": Please exit through stairwell " + codeA + endOutput);
+        a.textArea.append(beginOutput + "  The POSTER seems to be instructions in event of an outdoor evacuation it reads: " + "\n" + "\n" + "  \"first\": Please exit through stairwell " + "\"" + codeA + "\"" + endOutput);
         a.playerStringForObjects = "";
+        floorMap[0][3] = beginOutput + "  As you enter " + 2 + "N2" + " B, a musty smell infiltrates your" + "\n" + "  nose, and you can see dusty boxes of various school" + "\n" + "  supplies. There doesn't seem to be anything else in here."  + "\n" + "\n" + "  To your east is 2N2, the AP Prep room" + "\n" + "\n" + "  What will you do?" + endOutput;
         hasPoster = true;
     }
     else if (a.playerStringForObjects.equalsIgnoreCase("use Poster") && hasPoster){
@@ -105,8 +104,9 @@ public void getPoster(windowlayout a){
 
 public void getMonitor(windowlayout a){
     if(a.playerStringForObjects.equalsIgnoreCase("get Monitor") && floorMap[x][y] == floorMap[2][0]){
-        a.textArea.append(beginOutput + "  As you approach the Monitor, it displays: " + "\n" + "\n" + "  This is the \"second\" warning: Please return to your seat in ge" + "\"" + codeB + "\"" + " minutes before your test is deemed invalid. " + endOutput);
+        a.textArea.append(beginOutput + "  As you approach the Monitor, it displays: " + "\n" + "\n" + "  This is the \"second\" warning: Please return to your seat in " + "\"" + codeB + "\"" + " minutes before your test is deemed invalid. " + endOutput);
         a.playerStringForObjects = "";
+        floorMap[2][0] = beginOutput + "  As you walk into the SAT prep room, you're met" + "\n" + "  with a poster depicting a hooded man and a senior" + "\n" + "  citizen with \"NON PROFIT\" written on their shirt, flailing money" + "\n" + "  around. A caption reads: \"BFFS!\". In the clasroom, several students" + "\n" + "  are mindlessly answering questions on their computer. It doesn't seem" + "  like there's anything else to do inside." + "\n" + "\n" + "  To your north are the South East halls." + "  What will you do?" + endOutput;
         hasMonitor = true;
     }
     else if (a.playerStringForObjects.equalsIgnoreCase("use Monitor") && hasMonitor){
@@ -117,24 +117,26 @@ public void getMonitor(windowlayout a){
 
 public void getNote(windowlayout a){
     if(a.playerStringForObjects.equalsIgnoreCase("get Note") && floorMap[x][y] == floorMap[3][1]){
-        a.textArea.append(beginOutput + "  you take the note off of the stall walls. It reads:" + "\n" + "\n" + "  This is the \"third\" time I have to say this: Please flush the god damn toilets! This is the " + codeC + "th time I've had to deal with this!" + endOutput);
+        a.textArea.append(beginOutput + "  you take the note off of the stall walls. It reads:" + "\n" + "\n" + "  This is the \"third\" time I have to say this:" + "\n" + "  Please flush the god damn toilets! This is the " + "\"" + codeC + "\"" + "\n" + "th time I've had to deal with this!" + endOutput);
         a.playerStringForObjects = "";
+        floorMap[3][1] = beginOutput + "  As you enter the bathroom, a strange smoky, yet fruity" + "\n" + "  smell fills your nose. There doesn't seem to be anything" + "\n" + "  to do." + "\n" + "\n" + "  To your west are the South East halls." + "\n" + "\n" + "  What will you do?" + endOutput;
         hasNotes = true;
     }
     else if(a.playerStringForObjects.equalsIgnoreCase("use note") && hasNotes){
-        a.textArea.append(beginOutput + "You read the note:" + "\n" + "\n" + "  This is the \\\"third\\\" time I have to say this: Please flush the god damn toilets! This is the " + codeC + "th time I've had to deal with this!" + endOutput);
+        a.textArea.append(beginOutput + "You read the note:" + "\n" + "\n" + "  This is the \\\"third\\\" time I have to say this: Please flush the god damn toilets! This is the " + "\"" + codeC + "\"" + "th time I've had to deal with this!" + endOutput);
         a.playerStringForObjects = "";
     }
 }
 
 public void getClipBoard(windowlayout a){
     if(a.playerStringForObjects.equalsIgnoreCase("get clipboard") && floorMap[x][y] == floorMap[3][2]){
-        a.textArea.append(beginOutput + "  You grab the clipboard off the desk. It seems to be grades of several students: " + "\n" + "\n" + "  \"Fourth\" Student: " + codeD + "/10");
+        a.textArea.append(beginOutput + "  You grab the clipboard off the desk. It seems to be grades of several students: " + "\n" + "\n" + "  \"Fourth\" Student: " + "\"" + codeD + "\"" + "/10" + endOutput);
         a.playerStringForObjects = "";
+        floorMap[3][2] = beginOutput + "  As you enter 2E17, you hear several students giving a" + "\n" + "  presentation about some controversial current event and how their proposed" + "\n" + "  solutions could solve it. They don't seem to notice you" + "\n" + "  entering. There doesn't seem like there's anything you can do." + "\n" + "\n" + "  To your west are the North East halls." + "\n" + "\n" + "  What will you do?" + endOutput;
         hasClipboard = true;
     }
     else if(a.playerStringForObjects.equalsIgnoreCase("use clipboard") && hasClipboard){
-        a.textArea.append("  You read the clipboard:" + "\n" + "\n" + "  \"Fourth\" Student: " + codeD + "/10" );
+        a.textArea.append("  You read the clipboard:" + "\n" + "\n" + "  \"Fourth\" Student: " + "\"" + codeD + "\"" + "/10" + endOutput);
         a.playerStringForObjects = "";
     }
     
@@ -158,81 +160,6 @@ public void floorMapSpotsEnterable(){
     floorMap[2][0] = beginOutput + "  As you walk into the SAT prep room, you're met" + "\n" + "  with a poster depicting a hooded man and a senior" + "\n" + "  citizen with \"NON PROFIT\" written on their shirt, flailing money" + "\n" + "  around. A caption reads: \"BFFS!\". In the clasroom, several students" + "\n" + "  are mindlessly answering questions on their computer. it appears one" + "\n" + "  MONITOR is displaying a strange message." + "\n" + "\n" + "  To your north are the South East halls." + "  What will you do?" + endOutput;
 }
 
-//movement voids
-public void moveEast(windowlayout a){
-    if(a.playerStringForObjects.equalsIgnoreCase("go east")){
-        x++;
-        movingEast = true;
-        invalidAreaInArrayx(a);
-        a.textArea.append(floorMap[x][y]);
-        a.playerStringForObjects = ""; 
-    }
-}
-
-public void moveWest(windowlayout a){
-    if(a.playerStringForObjects.equalsIgnoreCase("go west")){
-    x--;
-    movingEast = false;
-    invalidAreaInArrayx(a);
-    a.textArea.append(floorMap[x][y]);
-    a.playerStringForObjects = "";
-    }
-}
-
-public void moveNorth(windowlayout a){
-    if(a.playerStringForObjects.equalsIgnoreCase("go north")){
-    y++;
-    movingNorth = true;
-    invalidAreaInArrayY(a);
-    a.textArea.append(floorMap[x][y]);
-    a.playerStringForObjects = "";
-    }
-}
-
-public void moveSouth(windowlayout a){
-    if(a.playerStringForObjects.equalsIgnoreCase("go south")) {
-        if(floorMap[x][y] == floorMap[3][1]){
-            a.textArea.append(beginOutput + "  Invalid movement!" + endOutput);
-            return;
-        }
-        y--;
-        movingNorth = false;
-        invalidAreaInArrayY(a);
-        a.textArea.append(floorMap[x][y]);
-        a.playerStringForObjects = "";
-    }
-}
-
-//voids for testing if array is out of bounds    
-public void invalidAreaInArrayx(windowlayout a)
-{
-    if( x > 3 || x < 0)
-    {
-        a.textArea.append(beginOutput + "  Invalid movement!" + endOutput);
-        if(x < 0) x++;
-        else x--;
-    }
-    if(floorMap[x][y] == "  Cannot Enter"){
-        a.textArea.append(beginOutput + "  Can't go here!" + endOutput);
-        if(movingEast) x--;
-        else x++;
-    }
-}
-
-public void invalidAreaInArrayY(windowlayout a)
-{
-    if(y > 3 || y < 0)
-    {
-        a.textArea.append(beginOutput + "  Invalid movement!" + endOutput);
-        if(y < 0) y++;
-        else y--;
-    }
-    if(floorMap[x][y] == "  Cannot Enter"){
-        a.textArea.append(beginOutput + "  Can't go here!" + endOutput);
-        if(movingNorth) y--;
-        else y ++;
-    }
-}
 
 //Misc voids
 public void commandCheck(windowlayout a){
